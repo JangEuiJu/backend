@@ -1,4 +1,4 @@
-## 데이터베이스
+# 데이터베이스
 - 개발환경 구축
     - 로컬 PC 기반 설치
         - OS에 직접 설치
@@ -21,7 +21,41 @@
         - 세팅
             - (*)Docker client 설치
             - 명령어에서 mysql 설치 
-            - mysql 전용 workbanch 설치(별로도)
+            - mysql 전용 workbench 설치(별로도)
+        - mysql 설치
+            - image 다운로드
+                - mysql 이미지 다운로드 (ex) xx.iso파일->CD굽기, usb 설치파일 등등)
+            - image로부터 컨테이너 생성 
+                - mysql 이미지 -> 설치
+                - 컨테이너 가동 -> mysql 사용!!
+            - (*)mysql 이미지/컨테이너 생성
+                ```
+                    docker run -d -p 3306:3306 --name mysql --env MYSQL_USER=ai --env MYSQL_PASSWORD=1234 --env MYSQL_ROOT_PASSWORD=1234 mysql
+                ```
+                ```
+                    docker run  : 이미지를 다운, 컨테이너 생성,구동
+                    -d          : 백그라운드로 가동
+                    -p 3306:3306 : OS단에서 3306번으로 접근(포트)
+                    --name mysql : 컨테이너 이름
+                    --env MYSQL_USER=ai : 환경변수 ai 유저 생성
+                    --env MYSQL_PASSWORD=1234  : ai 유저의 비번
+                    --env MYSQL_ROOT_PASSWORD=1234 : root 유저의 비번
+                    mysql : 이미지 이름
+                ```
+            - 확인
+                - 도커 클라이언트 툴
+                - 컨테이너 탭
+                - mysql 클릭
+                - EXEC 클릭 
+                    ```
+                        # 접속
+                        mysql -u root -p
+                        password:1234 <= 비번입력
+                        ...
+
+                        mysql> <= 정상 설치 및 접근 OK
+                    ```
+
     - Cloud 기반 설치
         - AWS(아마존 클라우드) 기반 RDS 서비스 사용
             - 비용 주의!!
@@ -34,3 +68,22 @@
         - 모델링
         - (*)ERD
             - 스프링부트로 게시판, 등등 작업시 작성
+
+# SQL 구성
+- Structured Query Language
+    - Database
+        - (대량) 데이터를 스키마(구조)에 맞춰서 저장하는 저장소
+        - (*)정형, 비정형, 반정형 데이터
+        - 개발자는 DB에 질의를 해서 데이터를 획득
+            - 비즈니스 로직 처리
+                - 아이디/비번 => 조회 => 로그인
+                - 검색어 => 검색 => 결과를 출력 : 검색엔진
+    - 질의
+        - 구조화된 질의 언어(SQL) 문법 통해 진행
+        - 데이터베이스와 대화를 하는 언어
+    - 구성
+        - SQL = (*)DQL + DDL + DCL + DML (or TCL) 
+            - DQL : Data Query Language
+                - 조회!!, 질의 => 결과셋, 가장많은 분량
+                - select
+            - 나머지 언어, 진행하면서 정의
