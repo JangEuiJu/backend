@@ -251,3 +251,197 @@
 
             -- 조건식의 배치 순서에 따라 처리 속도가 다름!!
         ```
+
+- SELECT ~ FROM ~ WHERE ~ BETWEEN
+    - 조건식에 BETWEEN를 사용
+    - 조건을 부여하는 컬럼의 데이터 타입이 수치형(or 연속형)일때 사용가능
+        - 값과 값사이가 무한대 : 통상 연속형의 특징을 가짐
+        - 컬럼명 BETWEEN a AND b
+            - a <= 컬럼값 <= b
+        ```
+            -- city 테이블에서
+            -- 모든데이터를 가져온다
+            -- 단, 인구수가 5백만이상, 6백만 이하인 도시만 해당된다
+            -- 5000000 <= 인구수 <= 6000000
+            SELECT *
+            FROM city
+            WHERE city.Population BETWEEN 5000000 AND 6000000;
+        ```
+
+- SELECT ~ FROM ~ WHERE ~ IN
+    - 대상 컬럼의 데이터가 명목형(범위 부여 불가능) 데이터 대상
+    - 직접 나열한 대상만 조건이 되는 방식
+    ```
+        -- 한국(KOR), 미국(USA), 일본(JPN), 프랑스(FRA) 도시를 대상
+        -- 모든 데이터 총 수를 구하시오, 별칭은 cnt
+        SELECT COUNT(*) AS cnt
+        FROM city
+        WHERE city.CountryCode IN ('KOR','USA','JPN','FRA');
+        -- 632
+
+        -- 한국(KOR), 미국(USA), 일본(JPN), 프랑스(FRA) 도시를대상
+        -- 이중 인구수가 6백만 이상(>=)인 도시 => AND로 연결
+        -- 도시명, 인구수만 출력하시오
+        SELECT `NAME`, Population
+        FROM city
+        WHERE  city.CountryCode IN ('KOR','USA','JPN','FRA')
+            AND city.Population >= 6000000;
+        -- 3
+
+    ```
+
+- sub query
+    - 서브 쿼리
+    - 쿼리문(결과셋) 안에 쿼리문(결과셋)이 존재
+        - 대상
+            - 특정 테이블이 대상이 아니라, 테이블의 조회가 결과가 일종의 대상이 됨
+        - 조건
+            - 테이블의 조회결과가 조건에 사용된다
+    ```
+        -- 프랑스에 존재하는 모든 도시 정보를 출력하시오
+        -- 조건 - 국가 코드를 모른다!!
+        -- paris라는 도시명은 알고 있다!!
+        -- 해결 => paris를 이용하여 프랑스 국가코드를 획득 
+        --      => 위의 결과를 이용하여 <-'프랑스' <-'모든 도시 정보 획득'
+        -- (서브 쿼리->결과값 1개인가(where) n개 인가(from)?)
+        SELECT *
+        FROM city
+        WHERE city.CountryCode=( 	SELECT CountryCode
+                                            FROM city
+                                            WHERE `NAME`='paris'
+                                            );
+        -- 서브쿼리 결과 FRA -> 1개의 결과
+        -- 동일 요구사항, 단 District 컬럼값에 'New York'를 이용하여 구성
+        -- 주 정보를 이용하여 국가코드 획득 -> 해당국가의 모든 도시 정보 획득
+        SELECT *
+        FROM city
+        WHERE city.CountryCode=( 	SELECT CountryCode
+                                            FROM city
+                                            WHERE District='New York'
+                                        );
+        -- 오류발생, 1개의 일치된 값을 요구하는 조건문에 N개의 값을 대입
+        -- 해결 : 서브쿼리 조정-> 결과가 1개만 나오게 처리 (의도는 아님)
+        -- 다른 방식 : ANY, SOME을 응용하여 처리가능
+
+        -- 서브쿼리를 FROM에 사용 -> n개의 결과셋을 대상으로 진행
+        -- 통상 별칭 부여 -> 결과셋의 이름부여
+        -- 컬럼을 나열할때 이름.컬럼명 표현하여 출처를 명확하게 명시
+        -- 최종 컬럼명 별칭.컬럼명
+        SELECT A.*
+        FROM (SELECT CountryCode, `NAME` AS city_nm
+                FROM city
+                WHERE District='New York') AS A
+    ```
+    - 대부분의 요구사항들 대상, 디테일한 sql을 모른다면 => 서브쿼리로 모두 해결 가능하다!!
+
+- ANY, SOME
+    - 서브쿼리의 결과가 여러개가 나왔다, 조건식에서 사용하고 싶다
+    - 한가지만 만족하면 사용가능하게 처리
+    ```
+        -- 뉴욕`주`인 데이터 대상으로 인구를 구한다
+        -- 해당 인구보다 크기만 하면, 특정 대상이 되어, 
+        -- 모든 도시 정보를 출력한다
+
+        -- 모든 데이터들중에 뉴욕`주`에 해당되는 인구수보다 크면 조회된다
+        SELECT *
+        FROM city
+        WHERE Population > ( SELECT Population
+                                    FROM city
+                                    WHERE District='New York'
+                                );
+        
+        -- ANY 적용
+        SELECT *
+        FROM city
+        WHERE Population > ANY ( SELECT Population
+                                    FROM city
+                                    WHERE District='New York'
+                                );
+        -- 3782
+
+        SELECT *
+        FROM city
+        WHERE Population > SOME ( SELECT Population
+                                    FROM city
+                                    WHERE District='New York'
+                                );
+        -- 3782
+        -- 결론:뉴욕주의 가장 작인 인구수를 가진 도시보다 크기만 하면 모두 대상이됨
+
+        -- IN 하고 같은 결과물
+        SELECT *
+        FROM city
+        WHERE Population = ANY ( SELECT Population
+                                    FROM city
+                                    WHERE District='New York'
+                                );
+    ```
+
+- ALL
+    - 서브 쿼리의 모든 결과를 만족하면 조회된다
+    ```
+        -- ALL
+        -- 서브 쿼리의 결과 셋과 다 비교하여 모두 만족할때 대상이 됨
+        -- 가장 큰값보다 크면 모두 해당됨!!
+        SELECT *
+        FROM city
+        WHERE Population > ALL ( SELECT Population
+                                    FROM city
+                                    WHERE District='New York'
+                                );
+    ```
+
+- ORDER BY 컬럼명|조건 ASC|DESC
+    - 조회 결과를 특정 조건에 맞게 `정렬`
+    - 기본값 
+        - ASC (오름차순), 생략 가능함
+    ```
+    -- order by
+        -- city 테이블 대상
+        -- 모든 정보(데이터)를
+        -- `인구`순으로 오름차순(작은값 -> 큰값)  정렬한다
+        SELECT *
+        FROM city
+        ORDER BY  city.Population ;
+
+        SELECT *
+        FROM city
+        ORDER BY  city.Population ASC;
+
+        -- 내림차순 (큰값 -> 작은값)
+        SELECT *
+        FROM city
+        ORDER BY  city.Population DESC;
+
+        -- 정렬 조합 -> ,기준 열거
+        -- 위와 동일한 데이터를 요청
+        -- 인구는 내림차순, 국가코드는 오름차순 정렬
+        -- 인구는 내람차순-> 동일수치 -> 국가코드는 오름차순 정렬
+        SELECT *
+        FROM city
+        ORDER BY  city.Population DESC, city.CountryCode ASC;
+
+        -- 순서 변경하여 각각 정렬되었는지 체크
+        -- 명목(혹은 범주)형 데이터는 먼저 배체, 연속형(혹은 수치형) 차후 배치
+        SELECT *
+        FROM city
+        ORDER BY  city.CountryCode ASC, city.Population DESC;
+
+        -- 실습
+        -- city 테이블 대상
+        -- 한국 데이터만 대상, 도시명 오름차순, 인구 내림차순 정렬하시오
+        -- 모든 데이터를 보여준다
+        SELECT *
+        FROM city AS c
+        WHERE c.CountryCode='KOR'
+        ORDER BY  c.`Name` ASC, c.Population DESC;
+        -- 70개 데이터, 중요도에 따라 인구 혹은 도시명을 먼저 노출!!
+
+        -- country 테이블 대상
+        -- 국가 면적 순으로 정렬 (내림차순)
+        -- 국가명, 면적만 출력하시오
+        SELECT co.`Name`, co.SurfaceArea
+        FROM country AS co
+        ORDER BY co.SurfaceArea DESC;
+
+    ``` 
