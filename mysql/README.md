@@ -546,7 +546,6 @@
         SELECT c.CountryCode, AVG(c.Population) AS avg_popu, c.`Name`
         FROM city AS c
         GROUP BY c.CountryCode
-
     ```
 
 - HAVING
