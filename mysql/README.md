@@ -1090,9 +1090,97 @@
                     -- ( 48, 6 )              
                 ```         
 
-
-
         - 시간
+            - NOW(), CURDATE(), CURTIME()
+                - 현재 시간, YYYYMMDD HHMMSS
+            ```
+                -- yyyymmdd hhmmss 정보 각각 획득
+                SELECT NOW(), CURDATE(), CURTIME();
+
+                -- 시간값 자를 수 있는가?
+                SELECT left(CURDATE(), 4);
+                -- 활용 용도 -> 회원(쇼핑몰) -> 가입일, 수정일, 탈퇴일, 구매시간
+                -- 고객 분류 -> 마케팅, 서비스등제공, 고객등급결정 
+                -- 가입월일 계산 : (현재시간 - 가입시간) => 월(주,년)로 환산
+
+                -- 세부적인 시간 정보
+                SELECT NOW(),
+                    YEAR(   NOW() ), 
+                    DATE(   NOW() ),
+                    MONTH(  NOW() ),
+                    DAY(    NOW() ),
+                    HOUR(   NOW() ),
+                    MINUTE( NOW() ),
+                    SECOND( NOW() );
+
+                -- 기타 정보 -> 월의 이름, 요일의 이름
+                -- 시간 -> 요일 -> 주간 매출 분석 -> 어떤 요일에 ...
+                SELECT NOW(), 
+                    MONTHNAME( NOW() ),
+                    DAYNAME( NOW() );
+
+                -- 기타 정보, 주간, 월간, 년간 단위 현재 시간의 위치
+                SELECT NOW(),
+                    DAYOFWEEK(  NOW() ),
+                    DAYOFMONTH( NOW() ),
+                    DAYOFYEAR(  NOW() );	
+
+                -- 포멧 -> 시간의 형식을 자유롭게 구성!!
+                SELECT DATE_FORMAT( NOW(), '%D %y %s %d %m %j' );
+                -- 일 : %D, %d
+                -- 년 : %y
+                -- 초 : %s
+                -- 월 : %m
+                -- DAYOFYEAR : %j
+
+                -- 가장 많이 사용!! -> 시간 차이 계산!!
+                -- 시간차이 => ex) 가입한지 몇일 되었지?
+                -- ex) 2024/12/3 - 대통령 취임일  = 1000
+                -- DATEDIFF( 시간, 상대적으로 과거 ) => 양수로 나온다
+                -- 양으로 표현 => ABS(), 무조건양수
+                SELECT 
+                    -- 만약 시간의 양(일수만 체크하고 싶다면) -> 무조건 양수
+                    ABS(DATEDIFF( NOW(), '2024-12-01')), -- 과거시간
+                    ABS(DATEDIFF( NOW(), '2024-12-20')), -- 미래시간
+                    ABS(DATEDIFF( '2024-12-20' , NOW())); -- 미래시간
+                    
+                -- 시간 기입은 직접 가능 (형식 일치해야함)
+                SELECT ABS(DATEDIFF( '2024-12-01', '2024-12-18'));
+            ```
+
+    - 기타 부가 기능
         - 형변환
+            - 타입 변경
+                - 디비에는 다양한 유형의 데이터를 담는 그릇(타입)이 존재
+                - 그릇은 크기가 모두 다르다(담을 수 있는 양이 다름)
+            - A 그릇에 담긴 데이터를 B 그릇으로 변경하는 행위
+                - cast() 함수, convert()
+                - 키워드
+                    - BINARY, CHAR, DATE, DATETIME, DECIAML
+                    - JSON, NCHAR, SIGNED, TIME, UNSIGNED
+                ```
+                    -- 형변환 함수
+                    -- cast() 함수
+                    -- 문자 -> 수치
+                    -- UNSIGNED 부호가 없는 수치 => 양수
+                    SELECT '123', CAST('123' AS UNSIGNED);
+
+                    -- 문자|숫자 -> 날짜
+                    SELECT CAST('20241218' AS DATE); -- 2024-12-18
+                    SELECT CAST(20241218 AS DATE); -- 2024-12-18
+
+                    -- 숫자 -> 문자
+                    SELECT CONVERT(457398348, CHAR);
+                ```
+                - 변경이 가능한 데이터만 변경됨!!ㄴ
+
         - 일반
+
+
+
+
+
+
+
+
         - 랭킹
