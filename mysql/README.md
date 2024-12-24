@@ -838,4 +838,180 @@
                     FROM city AS c
                     ORDER BY size DESC
                     LIMIT 5;
+
+                    -- 수치형 데이터의 길이?
+                    -- 길이 계산의 대상은 문자열, 수치형 관계 없다
+                    SELECT c.name,  c.population, LENGTH(c.population) AS size
+                    FROM city AS c;
                 ```
+
+            - CONCAT()
+                - 문자열 결합, 요구사항중에 여러 컬럼값을 합쳐서 제공되길 원할수 있음
+                - 단, 1개라도 NULL이 존재한다면! -> NULL이됨
+                ```
+                    -- 기본 결합
+                    -- 값을 필요한 만큼 나열
+                    SELECT CONCAT('hello', '-', 'world');
+
+                    -- null이 존재하면 모두 null
+                    SELECT CONCAT('hello', null, 'world');
+
+                    -- 실제 테이블에서 적용
+                    -- 형식 : "도시명-인구수" 결과셋으로 나오는 결과 요청
+                    -- 컬러명 spec으로 지정
+                    SELECT CONCAT(c.`Name`, '-', c.Population) AS spec
+                    FROM city AS c;
+                ```
+
+            - LOCATE()
+                - 문자열내에 특정 문자열의 처음 등장하는 위치를 반환 
+                - 시작위치는 1부터 출발
+                - 0:없다!!
+                ```
+                    -- city 테이블에서
+                    -- 도시이름이 se로 시작하는 모든 도시들을 찾아서
+                    -- 위치값이 1 <= 위치값 < 4 : 1, 2, 3 만 해당
+                    -- 해당 데이터들은 모두 오름차순 정렬
+                    -- 출력값 도시명, 위치값(loc)
+                    -- SQL 구성하시오
+
+                    -- 서브 쿼리 사용 -> 결과셋을 이용하여 요구사항 구현
+                    -- 서브 쿼리를 테이블에 배치 -> 별칭부여(필수) -> 기본 조회
+                    SELECT *
+                    FROM (
+                        SELECT c.`Name`, LOCATE( 'se', c.`Name` ) AS loc
+                        FROM city AS c
+                    ) AS A
+                    -- 조건 부여 실습
+                    -- 위치값이 1 <= 위치값 < 4 : 1, 2, 3 만 해당
+                    -- 해당 데이터들은 모두 오름차순 정렬 (위치값 기준)
+                    WHERE 0 < A.loc AND A.loc < 4
+                    ORDER BY A.loc ASC;
+
+                    -- 똑같은 결과시도
+                    -- 서브쿼리 x
+                    -- 조건 변경 : 1 <= loc <= 2
+                    -- 조건표현시 사용 : BETWEEN ~ AND ~
+
+                    -- where 사용시 연산으로 의해 동적으로 만들어진(가공후) 컬럼 인지 x
+                    -- where에서 막히면(동적 컬럼 원인) -> 서브쿼리 or having
+                    SELECT c.`Name`, LOCATE( 'se', c.`Name` ) AS loc
+                    FROM city AS c
+                    -- WHERE loc BETWEEN 1 AND 2
+                    HAVING loc BETWEEN 1 AND 2
+                    ORDER BY loc ASC;
+                ```
+
+            - LEFT(), RIGHT()
+                - 왼쪽 기준 자르기
+                - 오른쪽 기준 자르기
+                - 데이터의 특정 파트만 추출 할때 사용
+                ```
+                    -- left(), right()
+
+                    -- 왼쪽 기준 3개
+                    SELECT LEFT('hello world', 3);
+
+                    -- 오른 쪽 기준 3개
+                    SELECT RIGHT('hello world', 3);
+
+                    -- 테이블에 적용
+                    -- 문자열, 수치형 -> 모두OK
+                    SELECT
+                        LEFT(c.`Name`, 2), c.`Name`, RIGHT(c.`Name`, 3), -- 문자열
+                        LEFT(c.Population, 2), c.Population, 
+                        RIGHT(c.Population, 3) -- 수치형	
+                    FROM city AS c;
+                ```
+            
+            - LOWER(), UPPER()
+                - 소문자 처리, 대문자 처리 -> 일괄변경
+                ```
+                    -- 소문자, 대문자 변환
+                    -- 오직 알파벳 문자만 대상 처리됨
+                    SELECT LOWER('abAB12가나!@');
+                    SELECT UPPER('abAB12가나!@');
+
+                    -- 테이블 컬럼에서 적용
+                    SELECT NAME, LOWER(NAME), UPPER(NAME)
+                    FROM city;
+
+                ```
+
+            - REPLACE()
+                - 특정 문자열 대체
+                ```
+                    -- 원본 데이터 기준 특정 문자열을 다른 문자열로 교체
+                    SELECT REPLACE('abAB12가나!@', 'bAB', '-비ab-');
+
+                    -- 수치형 적용
+                    -- 1780000 => 178****
+                    SELECT city.Population, REPLACE(city.Population, '0', '*')
+                    FROM city;
+                ```
+
+            - TRIM()
+                - 공백(노이즈)제거
+                    - 앞, 뒤, 양쪽, 내부(x)
+                - 지정자
+                    - BOTH
+                        - 양쪽, 공백 이외에 특정문자 제거
+                    - LEADING
+                        - 앞쪽에 공백 이외에 특정문자 제거
+                    - TRAILING
+                        - 뒤쪽에 공백 이외에 특정문자 제거
+                ```
+                    -- 공백제거, 특정 문자 제거
+                    SELECT TRIM('     ab   cd    ') -- 좌우 공백 제거 OK
+                    ,TRIM('    ab') -- 앞쪽 공백 제거
+                    ,TRIM('ab    ') -- 뒤쪽 공백 제거
+                    -- 대상 문자열에서 @ 제거
+                    -- 시작문자, 끝문자 중요-연속성중요
+                    ,TRIM(LEADING '@' FROM '@@@ A @@@') 
+                    ,TRIM(TRAILING '@' FROM '@@@ A @@@')
+                    ,TRIM(BOTH '@' FROM '@@@ A @@@') 
+                    ,TRIM(BOTH '@' FROM '[@@@ A @@@]')
+                    ;
+
+                    -- 테이블 적용
+                    -- 대소문자 구분
+                    SELECT c.name, TRIM(LEADING 'S' from c.`Name`)
+                    FROM city AS c
+                    WHERE c.CountryCode='kor';
+
+                ```
+            
+            - FORMAT()
+                - 포멧팅, 형식을 갖춰준다!!
+                - 수치형 => n(3)자리마다 , 삽입
+                - 결과물은 문자열로 변환된다
+                ```
+                    -- 포멧
+                    -- FORMAT(수치형 데이터, 소수부 자리수 지정)
+                    -- 정수부는 무조건 3자리 단위로 , 삽입
+                    -- 소수부는 자리수에 맞춰서 남김 -> 반올림 처리
+                    SELECT FORMAT( 234234343423.2455432432, 3), -- xxxx.246
+                        FORMAT( 234234343423.2423432432, 4);
+
+                    -- 테이블 적용
+                    -- 1780000 => 1,780,000 문자열로 처리해서 표현
+                    SELECT city.Population, FORMAT( city.Population, 0)
+                    FROM city;
+                ```
+
+            - SUBSTRING()
+                - 타겟 문자열의 특정위치에서 특정 길이만큼 추출
+                ```
+                    -- 문자열 자르기, left:왼쪽기준, right:오른쪽기준, 
+                    -- substring():원하는 위치에서 자르기
+                    -- 위치 정보는 1부터 출발
+                    -- SUBSTRING(타겟문자열, 시작위치, 길이)
+                    SELECT SUBSTRING('ABCDEFG', 2, 3);
+
+                    -- 포멧팅된 로그 잘라서 추출, 문자열 분할처리 유용
+                ```
+        - 수학
+        - 시간
+        - 형변환
+        - 일반
+        - 랭킹

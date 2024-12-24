@@ -28,3 +28,4 @@
                 - java, springboot
                     - itelliJ
                     
+- https://github.com/edu2ucoc/backend.git
