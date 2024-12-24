@@ -1279,3 +1279,111 @@
                     ,DENSE_RANK() OVER (ORDER BY co.order_date ASC) AS RANK3
                 FROM car_order AS co;                
             ```
+
+# DDL
+- Data Definition Language
+- 데이터 정의어
+- SQL
+    - create    : 테이블 생성
+    - alter     : 테이블 수정
+    - index     : 테이블 색인(인덱스) 작성 -> 검색
+    - drop      : 테이블/인덱스 삭제
+    - view      : 가상 테이블 => 데이터마트
+- 특징 
+    - 실행 즉시 반영됨
+
+- create table ~ as select ~
+    - 특정 테이블을 조회하여, 결과셋을 기반으로 동일한 테이블 생성
+    ```
+        -- city 테이블과 동일한 구조와 동일한 데이터를 가진 테이블  
+        -- city_copy 만드시오
+        CREATE TABLE city_copy 
+        AS SELECT * FROM city;
+
+        -- 카피된 테이블 확인
+        SELECT COUNT(*) FROM city_copy;
+
+        -- city_sub 테이블 생성
+        -- city 테이블 기반
+        -- 조건 : 국가코드 한국, 미국, 일본만 데이터로 카피<= IN
+        -- 컬럼 : 국가코드, 도시명, 인구수만 포함
+        CREATE TABLE city_sub
+        AS 
+        SELECT  c.CountryCode, c.`Name`, c.Population
+        FROM city AS c
+        WHERE c.CountryCode IN ('KOR','USA','JPN');
+
+        -- 확인
+        SELECT * FROM city_sub;
+    ```
+
+- create database
+    - 새로운 데이터베이스 생성
+        - create database 데이터베이스명
+    - 데이터베이스 삭제
+        - drop database 데이터베이스명
+    ```
+        -- 데이터베이스 
+        -- 인코딩 utf8mb4_gerneral_ci <= 한글 정상적 처리
+        CREATE DATABASE A1;
+
+        SHOW DATABASES;
+
+        DROP DATABASE A1;
+
+        SHOW DATABASES;
+    ```
+    - 기본 프로세스
+    - 요구사항분석 -> ERD + 모델링(생략가능) 
+    - 데이터베이스 생성 -> 테이블생성 -> 더미데이터 추가 -> 프로젝트 시작
+    - SQL 준비
+
+- create table
+    - 테이블 생성
+    - GUI 진행, 쿼리문 진행
+    ```
+        -- 테이블 생성 코드 - GUI
+        CREATE TABLE `guiusers` (
+            `id` INT NOT NULL AUTO_INCREMENT COMMENT '회원고유번호',
+            `uid` VARCHAR(32) NOT NULL COMMENT '회원고유아이디' COLLATE 'utf8mb4_general_ci',
+            `upw` VARCHAR(256) NOT NULL COMMENT '비밀번호-암호화' COLLATE 'utf8mb4_general_ci',
+            `age` TINYINT NULL DEFAULT NULL COMMENT '나이',
+            `email` VARCHAR(128) NULL DEFAULT NULL COMMENT '이메일' COLLATE 'utf8mb4_general_ci',
+            `regdate` TIMESTAMP NOT NULL DEFAULT (now()) COMMENT '가입일',
+
+            PRIMARY KEY (`id`) USING BTREE,
+            UNIQUE INDEX `uid_upw` (`uid`, `upw`) USING BTREE
+        )
+        COMMENT='회원 테이블'
+        COLLATE='utf8mb4_general_ci'
+        ENGINE=InnoDB
+        ;
+
+        -- 테이블 생성
+        -- 직접 작성 or  자바코드에서 자동 생성(SQL 몰라도 가능함)
+        -- 간단한 회원테이블
+        CREATE TABLE users (
+            id INT NOT NULL PRIMARY KEY,
+            uid VARCHAR(32) NOT NULL,
+            upw VARCHAR(256) NOT NULL,
+            age INT 	NULL,
+            email VARCHAR(32) NULL,
+            regdate TIMESTAMP NOT null
+        );
+        SHOW TABLES;
+
+        DESC users;
+    ```
+
+    - PK, FK 관계
+        - 게시글 : 댓글 = 1 : N
+            - 댓글 => 게시글 참조
+            - 게시글 삭제 => 댓글 모두 삭제 : 통상적 관리
+        - 스프링부트에서 게시판 작성 체크!!
+            - 문법, 관계 설정
+        - country(국가), city(도시)
+            - 국가가 존재해야 city 존재함
+            - 국가가 사라지면 city 사라짐 
+            - country : city = 1: N  <= 참조키로 연동   
+
+- alter table add | modify | drop
