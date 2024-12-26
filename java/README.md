@@ -29,7 +29,6 @@
         - 레거시 방식 
             - eclipse (이클립스) 
             - STS (https://spring.io/tools)
-
         - 최근 3-4년  
             - IntelliJ (인텔리J)
                 - Ultimate (유료, 대학생/교육용 무료료)
@@ -61,3 +60,47 @@
                 - Appre... > thema 조정
                 - Editor > font 조정
                 - auto 검색 > auto import > 체크박스 2개 체크 (최적 import 처리됨)
+
+# 프로젝트
+    - Java 프로젝트 생성
+        - 프로젝트 유형 Java 선택
+        - 적절한 이름 JavaBasic
+        - 프로젝트 위치 적절하게 구성
+    
+    - 프로젝트 구조 
+        - src/*.java 만 체크
+
+# Java 문법
+    - 기본 구동 구조 이해 
+    - 타입
+         - 자바의 타입 = 원시(primitive) 타입:8 + 참조(reference) 타입:무한대
+
+         - 원시(primitive) 타입 -> 값의 종류, 그릇의 크기(메모리 공간간)
+            - byte, short, (*)int, long : 정수형
+            - (*)float, double : 부동소수형
+            - (*)boolean : 참/거짓
+            - char : 문자
+
+        - 원시타입-메모리크기로 비교 (그릇의 크기가 다음)
+            - byte   : 1 byte (8bit)    : -2^7 ~ 2^7   <= 값의 표현 범위
+            - short  : 2 byte (16bit)   : -2^15 ~ 2^15
+            - (*)int : 4 byte (32bit)   : -2^31 ~ 2^31 <= 가장 많이 사용(주로)
+            - long   : 8 byte (64bit)   : -2^63 ~ 2^63         
+            - float  : 4 byte
+            - double : 8 byte
+            - boolean : 1 bit
+            - char    : 2 byte
+
+        - 참조형
+            - 객체 이후 등장!!
+            - ex) String, 배열, 객체, 컬렉션, ...
+    
+    - 연산자
+        - JS와 거의 동일하다!!
+        - 생략
+        - +, -, /, *, %, &, |, ^, !, ....
+        - >=, <=, ==, !=, >, <, ...
+        - 다른 코드 진행하면서 체크
+
+    - 흐름제어
+        - if문, for 문, while문, switch문 : 모두 동일함
