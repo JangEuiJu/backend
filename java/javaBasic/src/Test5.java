@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * 컬렉션(*) API
@@ -12,7 +11,7 @@ import java.util.List;
  *          - 중복 데이터가 없다(중복제거)
  *          - HashSet, TreeSet
  *      - Map
- *          - 키와 값 형태로 보관 -> JSON, JS 객체 , python dict
+ *          - 키와 값 형태로 보관 -> JSON, JS 객체, python dict
  *          - HashMap, TreeMap
  */
 
@@ -36,6 +35,73 @@ public class Test5 {
             temp.add("c");
 
             System.out.println(temp); // [a, b, c]
+
+            // List는 언제든지 가변적으로 맴버 추가 혹은 삭제 가능
+            // 값 출력하기
+            System.out.println(temp.get( 1 )); // 참고 배열은 변수[ 1 ]
+            // 크기 확인 -> for문과 자주 사용
+            System.out.println(temp.size()); // 데이터 전체 크기
+            // 요소 삭제
+            System.out.println(temp.remove(1)); // 삭제된 내용이 출력
+            // 초기화 -> 데이터 모두 버림 -> 버퍼를 비운다, 모두 삭제
+            temp.clear();
+            System.out.println(temp.size());
+            System.out.println(temp);
+        }
+        // 2. Set - 중복 제거(허용 x)
+        //    동일한 값 넣어서 확인, 순서는 X(보장되지 않음)
+        {
+            // 컬렉션 스타일의 그릇 생성
+            Set<String> temp = new HashSet<>();
+
+            // 요소추가
+            temp.add("서울");
+            temp.add("부산");
+            temp.add("대전");
+            temp.add("대구");
+            temp.add("인천");
+            temp.add("서울"); // 중복 추가
+
+            // 중복이 제거 되었는가?
+            System.out.println(temp);
+            // 중복 제거 OK, 검사과정에서 순서가 바꼈음
+            // 순서가 중요하지 않는 데이터 를 사용하여 중복 제거 혹은 이후 정렬
+            System.out.println(temp.size());
+            // Set은 조연임, 특정 과정속에서 데이터 전처리에 사용됨
+        }
+        // 3. (중요)Map, 키와 값의 쌍으로 구성
+        //    키는 고유값, 값은 중복 가능
+        {
+            // Integer는 int를 대변하는 클래스 (레퍼클래스) -> int
+            Map<String, Integer> persons = new HashMap<>();
+
+            // 컬렉션의 이름 => 복수형으로 구성
+            // 요구사항 사람의 이름과 나이를 관리하는 자료구조 구성
+            // 키는 이름, 값은 나이
+            // 키-값 추가 (이름, 나이) <= 의미 부여
+            persons.put("JJ", 40);
+            persons.put("Kim", 30);
+            persons.put("Park", 20);
+
+            // 값 출력 : {JJ=40, Kim=30, Park=20}
+            System.out.println(persons);
+            // 개별값 : JJ의 나이는? 40
+            System.out.println("JJ의 나이는? "+ persons.get("JJ"));
+
+            // 크기
+            System.out.println(persons.size());
+            // 새로 추가하는  내용의 키가 기존에 존재하는 키라면? (키 중복)
+            persons.put("JJ", 41); // 추가 x,  수정 ok(키는 고유함)
+            System.out.println(persons);
+
+            // TODO Map for문을 이용하여 모든 값 출력하기 -> 나중에 체크 Generic.java
+
+            // 삭제
+            persons.remove("JJ"); // JJ 제거
+            System.out.println(persons); // {Kim=30, Park=20}
+            // 초기화 -> 내용 비워라
+            persons.clear();
+            System.out.println(persons); // {}
         }
     }
 }
