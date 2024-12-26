@@ -15,7 +15,7 @@ public class Test3 {
         flowcontrol1();
         // 반복문-for 연습 : 지정된 횟수 반복
         // flowcontrol2();
-        // 반복문-while 연습 : 무한루프(종료 시점 알수 없다)
+        // 반복문-while 연습 : 무한루프(종료 시점 알 수 없다)
         // flowcontrol3();
     }
 
