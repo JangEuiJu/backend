@@ -68,22 +68,26 @@ class Person4 {
     // 외부에서 직접  접근 x 설정 필요 => private 추가 : 데이터가 은닉(숨겨짐)됨 => 설계개념
     private String name;
     private int age;
+
     // Getter, Setter
     // public 지정해서 누구나 사용 가능하게 접근 제어를 조정
     public String getName() {
         return name;
     }
+
     public int getAge() {
         return age;
     }
+
     // setter 생성
     public void setName(String name) {
         this.name = name;
     }
+
     public void setAge(int age) {
         this.age = age;
+    }
 }
-
 
 // 1개의 자바 파일안에 여러개의 class가 존재할수 있다!!
 // 파일명과 일치하는 클래스, 그안에 main 함수가 존재하면 문제 없다!!
@@ -106,17 +110,17 @@ public class ClassInfo {
         Person2 p2 = new Person2();
         // p2는 멤버 존재 => 접근 => 객체명.멤버 : 도트(.) 연산자로 접근
         p2.name = "게스트";
-        p2.age  = 30;
+        p2.age = 30;
         // 멤버 메소드 사용
         p2.info();
 
         // Person3 객체 생성, 매개변수를 세팅해서 생성
         Person3 p3 = new Person3("게스트2", 10);
-        System.out.println(p3.name+" "+p3.age); // 멤버 변수 출력
+        System.out.println(p3.name + " " + p3.age); // 멤버 변수 출력
 
         // Person4 객체 생성
         Person4 p4 = new Person4();
         p4.setName("게스트3"); // p4.name="..."; <- 에러, 접근제어 오류
-        System.out.println( p4.getName() );
+        System.out.println(p4.getName());
     }
 }
