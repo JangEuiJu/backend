@@ -67,7 +67,7 @@ public class Test6_Syntax {
          // return 생략
      }
      // 최소버전 : JS와 유사
-     // Modifiers 사용 않하면 간단하다!!
+     // Modifiers 사용 안하면 간단하다!!
      int add(int a, int b){
          return a + b;
      }
