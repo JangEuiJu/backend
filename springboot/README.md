@@ -194,3 +194,54 @@
         - json을 응답하는 구조 체크
     -구성
         - ~/controllers/ApiController 생성
+    
+# 스트링부트기반 데이터베이스 연동 -> 게시판 구성
+    - java의 DB 연동
+        - JDBC -> 커넥션 풀 (기법) -> iBatis -> myBatis -> JPA
+    - (*)JPA
+        - 2020년 전후로 많이 사용, 신규 프로젝트에서 주로 사용
+        - ORM 방식 (객체로 적용하여, 데이터 1개 => 객체 1개와 대응하는 구조), 객체로 관리
+        - SQL을 잘 몰라도 적용가능, 디비 교체도 수월함
+    - myBatis
+        - 레거시 시스템 많이 적용되어 있음
+        - 2010년 이후 많이 사용됨, 전자전부프레임워크 등 대부분 구성
+        - SQL 중점으로 두고 개발, SQL 쿼리 작성 중요!!
+    - 데이터베이스
+        - 내장형 DB (*)h2 사용
+            - 경량, 별다른 세팅없이 바로 사용가능, JPA 기반인 경우 마이그레이션 가능(다른 디비로)
+        - 상용제품
+            - 오라클, (*)mysql/mariadb, postgre, ...
+    - H2 세팅
+        - build.gradle 라이브러리 세팅 (초기 프로젝트 생성 시 완료됨)
+            ```
+                // 서버 구동시(런타임시) 라이브러리 작동
+                runtimeOnly 'com.h2database:h2'
+            ```
+        - application.properties 환경설정
+            ```
+                spring.application.name=demoex
+                # 1. H2 database 설정
+                # 브라우저에서 접속하여 sql 실행
+                spring.h2.console.enabled=true
+                # 브라우저 접속 주소
+                spring.h2.console.path=/h2-console
+
+                # 2. database connect 파트
+                # app_db는 커스텀 이름
+                # C:\Users\사용자명\app_db.mv.db 자동생성(생성이 안되면 수동처리)
+                spring.datasource.url=jdbc:h2:~/app2_db
+                # 접속시 드라이버 설정
+                # spring.datasource.driverClassName=
+                spring.datasource.driver-class-name=org.h2.Driver
+                # 접속계정
+                spring.datasource.username=sa
+                spring.datasource.password=
+
+                # 3. JPA 설정
+                # 데이터베이스 엔진 종류 설정
+                spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect
+                # JPA -> 사용이득 -> 테이블로 알아서 생성해준다!!
+                # 엔티티 클레스 작성 -> 매칭되는 테이블이 자동 생성됨 !!
+                # 단 데이터베이스는 직접 생성!!
+                spring.jpa.hibernate.ddl-auto=update
+            ```
