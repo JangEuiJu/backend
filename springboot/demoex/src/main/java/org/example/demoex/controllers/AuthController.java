@@ -41,7 +41,7 @@ public class AuthController {
                           @RequestParam String uid,
                           @RequestParam String upw) {
         System.out.println("클라이언트 전송 데이터 : " + uid);
-        return "signin " + uid + " " + upw;
+        return "signin " + uid + " " + upw + " " + pno + " " + pid;
     }
 }
 
