@@ -27,6 +27,7 @@ public class AuthController {
     public String signin(@RequestParam String uid,
                          @RequestParam String upw) {
         // 실제로는 유효성 검사 -> DB query(회원인가? 점검) -> 결과에 후속처리(인증...)
-        return "signin" + uid + upw;
+        System.out.println("클라이언트 전송 데이터 : " + uid);
+        return "signin " + uid + " " + upw;
     }
 }

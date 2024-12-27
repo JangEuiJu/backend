@@ -157,7 +157,7 @@
                     - @PostMapping() : post 데이터 획득
                         - 보안 중요, 전달 데이터가 노출되면 x, 대량 데이터 전송(파일 업로드)
                         - html form 혹은 ajax로 사용, 요청 테스트 도구(POSTMAN, Thunder Client...)
-                        - Thunder Client (요청 테스트용도)
+                        - Thunder Client (요청 테스트 용도)
                             - vscode extension 설치
                             - 번개 아이콘 클릭 > 진입 > new Request 클릭
                                 - POST 선택
