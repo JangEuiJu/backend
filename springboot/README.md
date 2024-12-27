@@ -245,3 +245,8 @@
                 # 단 데이터베이스는 직접 생성!!
                 spring.jpa.hibernate.ddl-auto=update
             ```
+    - 디비 접속
+        - 서버 가동 중이여야 함
+        - http://localhost:8080/h2-console
+    - JPA를 이용한 데이터베이스 프로그램
+    - 구성 실습
