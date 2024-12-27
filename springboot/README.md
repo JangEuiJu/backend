@@ -188,3 +188,9 @@
     - getter, setter, 생성자, 빌더 등을 자동으로 생성해주는 라이브러리
     - 패키지 dto 준비
         News.java 생성
+
+# RestAPI, @RestController
+    - 목적
+        - json을 응답하는 구조 체크
+    -구성
+        - ~/controllers/ApiController 생성
