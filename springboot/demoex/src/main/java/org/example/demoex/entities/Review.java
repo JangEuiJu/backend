@@ -17,6 +17,9 @@ public class Review {
     @Column(columnDefinition = "TEXT")
     private String content;
 
-
     private LocalDateTime createDate;
+
+    // 리뷰 : 본 글 = N:1 관계
+    @ManyToOne
+    private Post post;
 }
