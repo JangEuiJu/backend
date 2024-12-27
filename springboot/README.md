@@ -294,4 +294,48 @@
             - ORM(객체 관계 매핑)을 실제로 구현한 것
             - 보안에 취약
             - 클라이언트에게 노출되면 안됨, 최대 Service까지만 사용가능, controller 사용 x
-        
+        - jpa
+            - Java Persistance API
+            - (*)자바 표준 ORM 기술
+            - 객체와 관계형 데이터베이스 간의 매핑 제공
+                - JPA 사용은 데이터베이스를 자바에서 객체 지향으로 관리하겠다라는 의도!!, SQL 사용을 최대한 배제
+        - database
+            - RDB
+    - 구성 실습
+        - a. 패키지 구성
+            - 방식 (대략 2가지로 구성)
+                - 비지니스 로직별로 구성
+                    - auth or auth>controllers
+                        - *Controller.java
+                        - *Service.java
+                        - ...
+                    - main    
+                - (*)자바 파일의 용도별로 구성
+                    - controllers
+                        - *Controller.java
+                    - services
+                        - *Service.java
+                    - dto
+                    - repositories
+                    - entities
+        - b. ERD 구성
+
+
+
+        - c. Entity 구성
+
+
+
+        - d. 게시물 화면으로 보이기 (게시판 뷰)
+
+
+
+        - e. 타임리프 기본 문법
+
+
+
+        - f. 게시판 기능 완성 -> CRUD 연습
+
+
+
+        - g. 목표
