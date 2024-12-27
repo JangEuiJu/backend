@@ -162,7 +162,7 @@
                             - 번개 아이콘 클릭 > 진입 > new Request 클릭
                                 - POST 선택
                                 - http://localhost:8080/auth/signin
-                                - SEND 버큰 클릭
+                                - SEND 버튼 클릭
                                 - 화면 하단 200 OK (요청 테스트 확인)
                                 - 데이터 세팅
                                     - Body > Form
