@@ -33,7 +33,7 @@ public class HomeController {
         System.out.println(news.getAuthor());
         System.out.println(news.getTitle());
         System.out.println(news.getContent());
-        news.setContent("3.6");
+        news.setContent("3:6");
         System.out.println(news.getContent());
 
         return "index";
