@@ -69,4 +69,9 @@ public class PostService {
         // throw new Exception();
         return null; // 향후 커스텀 예외처리 변경
     }
+    // 글등록 처리(비지니스 로직) -> 레퍼지토리에게 지시 : SQL 처리 요청
+    public void create(PostDto build) {
+        // insert~ 작업지시
+        this.postRepository.save(build.toEntity());
+    }
 }
