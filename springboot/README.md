@@ -305,7 +305,7 @@
         - a. 패키지 구성
             - 방식 (대략 2가지로 구성)
                 - 비지니스 로직별로 구성
-                    - auth or auth>controllers
+                    - auth or auth > controllers
                         - *Controller.java
                         - *Service.java
                         - ...
@@ -330,17 +330,27 @@
                 - 필요한 기능은 툴에서 설정
             - 테이블 설계
                 - 개발하면서 계속 수정 가능!!(단기간)
-                    - 단기간에는 지속적 수정이 발생될 있음
+                    - 단기간에는 지속적 수정이 발생될 수 있음
             - 개발의 첫작업!!
         - c. Entity 구성
             - 현재 요구사항은 테이블 2개 -> 엔티티 2개 생성
             - 테이블명과 동일하게 구성, 필요시 변경 가능
             - 자바 파일생성
-                - ~/entities/Post.java, Review.java
-
-                
+                - ~/entities/Post.java, Review.java             
         - d. 게시물 화면으로 보이기 (게시판 뷰)
-
+            - Post 테이블의 내용을 html로 표시
+                - 4-1. 더미 데이터 삽입 후 테스트 -> h2 입력
+                - 4-2. 데이터를 html에 뿌리는 과정을 통해 db 연동 플로우 체크
+                    - 4-2-1. PostController 에서 /post/list, get방식 준비 
+                        - ~/templates/test/post_list.html 
+                        - (*)controller <-> service <-> dto <-> repository <-> entity <-> jpa <-> database
+                    - 4-2-2. 서비스 구성 
+                        - controller <-> (*)service <-> dto <-> repository <-> entity <-> jpa <-> database
+                    - 4-2-3. dto 구성 
+                        - controller <-> service <-> (*)dto <-> repository <-> entity <-> jpa <-> database
+                    - 4-2-4. repository 구성 
+                        - controller <-> service <-> dto <-> (*)repository <-> entity <-> jpa <-> database
+                    - 4-2-5. 타임리프 템플릿 엔진 적용 - 화면에 게시물의 내용 출력
 
 
         - e. 타임리프 기본 문법
