@@ -5,6 +5,7 @@ import org.example.demoex.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -25,7 +26,7 @@ public class PostController {
 
     // ~/post/list, get 방식 준비
     @GetMapping("/list")
-    public String list() {
+    public String list(Model model) {
         // 1. 서비스(PostService)를 통해서 쿼리가 실행이 되고(내부적), 그 결과를 가져온다
         //    서비스 객체를 가져와서 -> 매번 가져온다? -> 객체가 매번 생성된다? -> n개
         //    (*)객체가 한번만 만들어지고 => 요청할 때마다 그 객체가 와서 작업되어 진다면? -> 1개
@@ -42,10 +43,11 @@ public class PostController {
         }
 
         // 2. 조회 결과는 타임리프 템플릿 엔진에 전달하여, 동적으로 html 구성 한다(랜더링)
-        //    Model 객체를 활용하여 데이터를 세팅후 전달한다
+        //    Model 객체를 활용하여 데이터를 세팅 후 전달한다
         //    1. 매개변수에 모델 객체 추가
         //    2. 코드 내부에서 모델 객체에 데이터 추가
-
+        model.addAttribute("posts", posts); // 게시물 데이터 전달
+        model.addAttribute("dummy", "hello"); // 더미
 
         // 3. 응답한다
         return "test/post_list"; // resource/templates/test/post_list.html 읽어서 렌더링
