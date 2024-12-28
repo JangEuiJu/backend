@@ -53,4 +53,27 @@ public class PostController {
         return "test/post_list"; // resource/templates/test/post_list.html 읽어서 렌더링
 
     }
+    
+    // ~/post/create, get 방식
+    @GetMapping("/create")
+    public String create() {
+        return "create";
+    }
+    // ~/post/detail, get 방식
+    @GetMapping("/detail/{id}")
+    public String detail() {
+        return "detail";
+    }
+    // ~/post/modify, get 방식
+    @GetMapping("/modify/{id}")
+    public String modify() {
+        return "modify";
+    }
+    // ~/post/delete, get 방식
+    @GetMapping("/delete{id}")
+    public String delete() {
+        return "delete";
+    }
+
+
 }

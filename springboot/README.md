@@ -372,10 +372,25 @@
                     - DBA : 모델링, 테이블 등 작업
                     - 디자인 : 시안(a,b,c,d) -> html 코딩, css 작업 등
                     - js : 프런트 진행
-
+            - 5-2. 각 용도에 맞게 라우트 처리
+                - HomeController
+                    - 대시보드 메인 : ~/dashboard
+                - PostController
+                    - 글 목록(게시판): ~/post/list
+                    - 글 작성하기 : ~/post/create
+                    - 글 상세보기 : ~/post/detail/{id}
+                    - 글 수정하기 : ~/post/modify/{id}
+                    - 글 삭제하기 : ~/post/delete/{id}
+                - ReviewController
+                    - 리뷰 쓰기 : ~/review/create
+                    - 리뷰 목록 : ~/review/list
+                    - 리뷰 수정하기 : ~/review/modify/{id}
+                    - 리뷰 삭제하기 : ~/review/delete/{id}
+            - 5-3. 템플릿 구성 이해
+                - 타임리프 문법 정리
+                - 레이아웃 적용법, 조각 대체법 확인
+                - html 구성 내용 이해
             - SSR 습득
-
-
         - f. 게시판 기능 완성 -> CRUD 연습
 
 
