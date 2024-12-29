@@ -534,4 +534,16 @@
     - application.properties -> yml 파일로 변경 처리(계층 표현)
     - 상세구현
 
-    
+# 소스기반 개별 기술 확인
+- backend_1
+    - restapi + swagger + JS : 차트 그리기
+    - 웹소켓을 이용한 실시간 채팅 (네이버 뉴스 검색) : 채팅 방식
+- aop_test
+    - aop
+    - 로그/로깅
+    - 관리 및 유지보수, 편의성
+- test_mybatis
+    - maven 빌드 (pom.xml)
+    - DB 연동 mybatis 
+- upload_test
+    - 파일 업로드 (ajax, html form)
