@@ -36,9 +36,9 @@
                             - 타임리프에서 내장(외부 라이브러리)된 모듈 사용 => #객체명.메소드()
                                 - fields.hasAnyErrors() => 에러가 존재한다면 (th:if) - 조건부 렌더링
                         -->
-                        <div class="alert alert-danger" role="alert" th:if="${fields.hasAnyErrors()}">
+                        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
                             <!-- for each 방식, 에러를 하나씩 꺼내서 반복적으로 출력 -->
-                            <div th:each="error : ${fields.allErrors}"></div>
+                            <div th:each="error : ${#fields.allErrors()}" th:text="${error}"></div>
                         </div>
                         <div class="my-3">
                             <label for="subject" class="form-label">제목</label>
