@@ -78,4 +78,8 @@ public class PostService {
     public void modify(PostDto postDto) {
         this.postRepository.save(postDto.toEntity());
     }
+    // 글 삭제 처리
+    public void delete(PostDto postDto) {
+        this.postRepository.delete(postDto.toEntity());
+    }
 }

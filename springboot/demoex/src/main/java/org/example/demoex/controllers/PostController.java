@@ -178,9 +178,15 @@ public class PostController {
         return "redirect:/post/detail/" + id; // 특정 페이지로 자동 이동!!
     }
 
-    @GetMapping("/delete{id}")
-    public String delete() {
-        return "delete";
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        // JS로 한번 더 컨펌하는 단계는 일단 생략
+        // 1. id를 기반으로 dto 획득
+        PostDto postDto = this.postService.getOnePost(id);
+        // 2. postDto 정상 여부 체크, 값이 존재하는가? -> 생략
+        // 3. 삭제
+        this.postService.delete(postDto);
+        return "redirect:/post/list"; // 게시판 목록
     }
 
 }
