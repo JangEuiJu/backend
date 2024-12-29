@@ -12,15 +12,18 @@
     // console.log("리뷰폼", reviewForm);
     $('#reviewForm').on('submit', (e) => {
         // 1. submit 이벤트 무효화
-        e.preventDefault();
+        // e.preventDefault();
         // 2. 값 체크
         const reviewValue = $('#content').val().trim();
-        console.log("입력값", reviewValue, reviewValue.length)
+        console.log("입력값", reviewValue, reviewValue.length);
+
+        // 3. 길이 체킄 추가하여 반영, 빈 값
         if (reviewValue === '' || reviewValue.length > 256) {
           alert("Please enter a valid review")
           return false;
         }
-        return true;
+        // 4. 리뷰 등록 처리 진행
+        // return true;
     });
   </script>
 </div>
