@@ -476,3 +476,62 @@
                 - 깃허브 팀작업(프로젝트 첫날) 진행예정
 
 # 스프링 시큐리티
+- 개요
+    - 스프링 프레임워크의 하위 프레임워크
+    - 용도 : 인증, 인가(권한), 보안 프레임워크, 필수 적용
+    - 버전 : 6.x 사용
+
+-특징
+    - 인증
+    - 인가
+    - 보안정책설정
+    - 세션관리
+    - JWT, oAuth2 지원
+    - CSRF 공격 방어
+
+- 목적
+    - 로그인, 로그아웃
+    - 회원가입, 회원수정 x
+    - 페이지별 접근 여부등 정책 적용
+    - 인증이 있어야만 접근가능한 페이지
+    - 인증 없이 접근할수 있는 페이지
+    - 권한(인가)에 따라 메뉴가 상이하게 노출
+
+- 세팅
+    - 외부 라이브러리
+    ```
+        // 스프링 시큐리티 프레임워크
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        // 타임리프와 연동하는 스프링 시큐리티
+        implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'    
+        // 단위 테스트 스프링 시큐리티
+        testImplementation 'org.springframework.security:spring-security-test'
+    ```
+
+- 구조
+    - 설정 (config)
+        - 시큐리티 전반적인 정책 기술
+    - 컨트롤러
+        - 홈페이지 (인증 후 접근 가능하게 설계)
+        - 회원관리 페이지(로그인, 로그아웃, 회원가입,..)
+    - 엔티티
+        - User 테이블
+    - Dto
+        - User 관련 통신/디비용(가능하면 겸용)
+    - 레퍼지토리
+        - 회원관련 SQL 처리
+    - 서비스
+        - User 서비스 (DB용)
+        - UserDetail 서비스 (인증정보 등 용도)
+    - 유틸
+        - 컴포넌트 등록 -> DI 처리
+        - 인증/권한 정보 메소드 제공
+
+- 구성
+    - 패키지 구성
+    - 패키지 내 세부 파일(자바) 구성
+    - 엔티티 상세 작업
+    - application.properties -> yml 파일로 변경 처리(계층 표현)
+    - 상세구현
+
+    
