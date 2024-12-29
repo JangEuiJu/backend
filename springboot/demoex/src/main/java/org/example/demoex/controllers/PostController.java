@@ -1,6 +1,7 @@
 package org.example.demoex.controllers;
 
 import org.example.demoex.dto.PostDto;
+import org.example.demoex.form.PostForm;
 import org.example.demoex.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
@@ -59,6 +60,14 @@ public class PostController {
     public String create() {
         return "board/post_form";
     }
+
+    // ~/post/create2, get 방식
+    @GetMapping("/create2")
+    public String create2(PostForm postForm) {
+        // PostForm을 매개변수로 전달받음으로써, html 랜더링시 세팅 가능
+        return "board/post_form";
+    }
+
     // ~/post/create, post 방식
     // 자바의 오버로딩 => 매개변수를 다르게 사용해서 다른 메소드처럼 관리
     // 매개변수명은 <input name='값'>의 '값'을 변수명으로 사용 (중요!)
