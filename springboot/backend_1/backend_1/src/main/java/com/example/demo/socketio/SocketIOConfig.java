@@ -23,6 +23,7 @@ public class SocketIOConfig {
 	@Value("${socketio.server.port}")
 	private int port;
 	
+	// 서버측에서 웹소켓을 사용할 수 있게 빈 등록
 	@Bean
 	public SocketIOServer socketIOServer() {
 		Configuration config = new Configuration();

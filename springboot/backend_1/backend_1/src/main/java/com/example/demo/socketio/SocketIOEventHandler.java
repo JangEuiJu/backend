@@ -26,9 +26,10 @@ import com.corundumstudio.socketio.listener.DataListener;
  * -H "X-Naver-Client-Secret: 본인시크릿키" -v
  * 
  */
+// 서버측에서 실제로 작업하는 내용, 네이버 검색 응답 등등 각종 작업 세팅
 @Component
 public class SocketIOEventHandler {
-	// 통신용 모듈
+	// 통신용 모듈 (네이버, gpt 등의 외부서버와 통신하는 모듈)
 	@Autowired
 	private UtilExternalNet utilExternalNet;
 
@@ -54,7 +55,7 @@ public class SocketIOEventHandler {
 			// socket : 접속 해제한 클라이언트
 			System.out.println("클라이언트 접속해제 : " + socket.getSessionId().toString());
 		});
-		// 3. 클라이언트가 보낸 커스텀메세지 처리
+		// 3. 클라이언트가 보낸 커스텀메세지 처리 -> 이 메소드를 여러 개 구성하여 확장 가능
 		server.addEventListener("cvr_news", String.class, new DataListener<String>() {
 			@Override
 			public void onData(SocketIOClient client, String data, AckRequest ackSender) throws Exception {
