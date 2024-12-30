@@ -10,7 +10,7 @@ import com.example.demo.dto.Board;
 
 @Service
 public class BoardService {
-	// DI, JPA의 레포지토리 역활과 유사한 DAO를 가져옴
+	// DI, JPA의 레포지토리 역할과 유사한 DAO를 가져옴
 	@Autowired
 	private BoardMapper boardMapper;
 	public List<Board> getAllBoardList () {
