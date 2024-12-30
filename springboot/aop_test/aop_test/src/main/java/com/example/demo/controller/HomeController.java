@@ -23,10 +23,10 @@ public class HomeController {
 	private TargetService targetService;	// aop가 체크하는 타겟 메소드를 가진 서비스 
 	
 	/**
-	 * 클라이언트 정보 수집 -> 요청(Request 이름이 가미될것)
+	 * 클라이언트 정보 수집 -> 요청(Request 이름이 가미될 것)
 	 * 	- User-Agent : 고객식별 정보, 어떤 OS, 매체(PC,모바일,모바일의특정앱), 브라우저정보, ....
 	 *   	- 매체별(고객별,타겟별)로 다른 서비스 제공 가능!! -> 타켓팅
-	 *   	- 반응형웹 처리시 활용 (User-Agent, 해상도 활용)
+	 *   	- 반응형 웹 처리시 활용 (User-Agent, 해상도 활용)
 	 * @return
 	 */
 	@GetMapping("/")
