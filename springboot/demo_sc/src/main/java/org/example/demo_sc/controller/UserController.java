@@ -1,8 +1,12 @@
 package org.example.demo_sc.controller;
 
 
+import org.example.demo_sc.dto.UserDto;
+import org.example.demo_sc.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 /**
  * - 인증 없이 접근가능함 : 로그인, 회원가입
@@ -13,12 +17,37 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class UserController {
+    @Autowired
+    private UserService userService;
+
+    // 로그인
     @GetMapping("/login")
     public String login() {
         return "login";
     }
+    
+    // 회원가입
     @GetMapping("/signup")
     public String signup() {
         return "signup";
     }
+
+    // 회원가입 처리
+    @PostMapping("/signup_process")
+    public String signup_process(UserDto userDto) {
+        // 1. 전달 데이터 확인
+        System.out.println("회원 가입용 데이터 전달 : " + userDto.toString());
+        // 2. 서비스를 이용하여 회원가입 처리 UserService 처리
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
