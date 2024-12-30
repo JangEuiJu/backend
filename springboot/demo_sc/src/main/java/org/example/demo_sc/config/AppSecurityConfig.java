@@ -4,10 +4,16 @@ package org.example.demo_sc.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import java.security.Security;
 
 import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
 
@@ -37,7 +43,7 @@ public class AppSecurityConfig {
                 // a. 인증이 필요한 페이지와 아닌 페이지
                 .authorizeRequests()
                     // 아래 페이지는 인증 필요 x (로그인, 회원가입)
-                    .requestMatchers("/login", "/signup", "/user").permitAll()
+                    .requestMatchers("/login", "/signup", "/signup_process").permitAll()
                     // 나머지 모든 페이지는 인증 필요
                     .anyRequest().authenticated()
                 .and()
@@ -57,6 +63,32 @@ public class AppSecurityConfig {
                     // 활성화 처리되면 => form 태그 밑에 해당 값에 대한 설정이 필요(hidden 타입)
                     .disable()   // 안함!! -> 나중에 활성화!!
                 .build();
+    }
+
+    // 3. 로그인 처리 구성
+    //      - 인증 매니저 객체가 담당 -> 스프링부트 내에서 고유하게 객체로 존재
+    //      - 인증 관리자 객체 필요 -> Bean 구성 -> DI 처리 가능해짐
+    //      - 비밀번호 암호화 설정
+    //      - DB와 연동되는 실제적인 로그인 처리 -> 비지니스 로직 -> 서비스 등록
+    //      - 1개의 객체 필요 (서비스 x, 레퍼지토리 x) -> config 내부에 존재하는 @Bean or @Component
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http,
+            BCryptPasswordEncoder bCryptPasswordEncoder,
+            UserDetailsService userDetailService) throws Exception {
+        System.out.println("1회성 인증 관리자 등록 여부 체크");
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                // 인증관련하여 DB에 쿼리를 수행하여 존재 여부 체크
+                .userDetailsService(this.userDetailsService)
+                .passwordEncoder(bCryptPasswordEncoder)
+                .and()
+                .build();
+    }
+
+    // 4. 암호화 관련 모듈 필요 -> Bean 구성 -> DI 처리 가능해짐
+    //    사용자 -> 비번입력 1234 -> 암호화 -> 해시로 구성 293jnowdfnewf=23r8fdhi2n2kdh929md,p
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     // 1. 예외처리 -> 인증에 상관없이 원래 사용하던대로 자유롭게 접근 가능
