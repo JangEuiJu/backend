@@ -37,7 +37,10 @@ public class UserController {
     public String signup_process(UserDto userDto) {
         // 1. 전달 데이터 확인
         System.out.println("회원 가입용 데이터 전달 : " + userDto.toString());
-        // 2. 서비스를 이용하여 회원가입 처리 UserService 처리
+        // 2. 서비스를 이용하여 회원가입 처리 UserService 처리 -> DI
+        userService.create(userDto);
+        // 3. 회원가입 성공 후 로그인 이동
+        return "redirect:/login";   // or "redirect:/" <= 홈으로 포워딩 -> 보안에 의해 로그인으로 이동
     }
 
 }
