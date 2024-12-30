@@ -27,8 +27,8 @@ public class HomeController {
         if(principal != null) System.out.println(principal.getName());
 
         // 2. 컨트롤러 이외에 자바 코드에서 인증 정보 체크, 접근 확인
-//        System.out.println(authUtil.isUserAuth());
-//        System.out.println(authUtil.getUsername());
+        System.out.println(authUtil.isUserAuth());
+        System.out.println(authUtil.getUsername());
         return "index";
     }
 }

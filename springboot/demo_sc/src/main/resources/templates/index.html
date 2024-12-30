@@ -13,7 +13,7 @@
         Welcome <span sec:authentication="name"></span>
         <a href="/logout">로그아웃</a>
     </div>
-    <div>
+    <div sec:authorize="isAnonymous()">
         <!-- 인증되지 않은 유저에게 노출된다 -->
         <a href="/login">로그인</a>
     </div>
