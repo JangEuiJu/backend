@@ -26,6 +26,9 @@
 
     <fieldset>
         <h2>html 업로드</h2>
+        <!-- form 전송시 enctype="multipart/form-data" 적용
+            - 여러 개 파일 전송 가능한 구조, 다른 입력 데이터 전송 가능
+        -->
         <form action="/api/files/upload" method="post" enctype="multipart/form-data">
             <label for="file">업로드할 파일 선택:</label>
             <input type="file" id="file" name="file" required>
